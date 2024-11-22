@@ -10,7 +10,7 @@
     <string name="text_scan2">Choose your scan method here</string>
     <string name="btn_scan1">Gallery</string>
     <string name="btn_scan2">Camera</string>
-    <string name="text_scan3">Analiyst Result...</string>
+    <string name="text_scan3">Analiyst Result</string>
     <string name="text_scan4">Result</string>
     <string name="btn_scan3">scan other fruits and vegetables</string>
     <string name="btn_scan4">store recommendations</string>
