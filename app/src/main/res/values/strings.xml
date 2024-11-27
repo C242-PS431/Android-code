@@ -14,4 +14,9 @@
     <string name="text_scan4">Result</string>
     <string name="btn_scan3">scan other fruits and vegetables</string>
     <string name="btn_scan4">store recommendations</string>
+    <string name="text_track1">Daily history of scans</string>
+    <string name="text_track2">Scan date: dd/mm/yyyy</string>
+    <string name="text_track3">text....</string>
+    <string name="text_track4">Name of vegetable/fruit</string>
+    <string name="text_track5">Decscripition</string>
 </resources>
