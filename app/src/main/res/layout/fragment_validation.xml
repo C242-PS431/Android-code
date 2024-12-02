@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.scan.ValidationFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:gravity="center"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_scan5"
+            android:textAlignment="center"
+            android:textColor="@color/purple_300"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginVertical="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_scan6"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"
+            android:textAlignment="center"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroupBau"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/radioSegar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/RG1" />
+
+            <RadioButton
+                android:id="@+id/radioBusuk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/RG2" />
+
+            <RadioButton
+                android:id="@+id/radioNetral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/RG3" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_scan7"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupTekstur"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/radioKeras"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/RG4" />
+
+            <RadioButton
+                android:id="@+id/radioLembek"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/RG5" />
+
+            <RadioButton
+                android:id="@+id/radioNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/RG6" />
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/buttonResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_scan5"
+            android:backgroundTint="@color/green_300"/>
+    </LinearLayout>
+</FrameLayout>
