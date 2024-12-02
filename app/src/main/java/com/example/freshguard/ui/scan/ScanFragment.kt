@@ -12,9 +12,6 @@ import com.example.freshguard.databinding.FragmentScanBinding
 class ScanFragment : Fragment() {
 
     private var _binding: FragmentScanBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -22,7 +19,7 @@ class ScanFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val notificationsViewModel =
+        val scanViewModel =
             ViewModelProvider(this).get(ScanViewModel::class.java)
 
         _binding = FragmentScanBinding.inflate(inflater, container, false)

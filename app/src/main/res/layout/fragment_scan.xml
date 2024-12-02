@@ -70,4 +70,12 @@
             tools:ignore="ButtonStyle" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/buttonValidation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_scan4"
+        android:backgroundTint="@color/purple_200"
+        tools:ignore="ButtonStyle" />
+
 </LinearLayout>

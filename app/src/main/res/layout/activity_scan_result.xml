@@ -93,11 +93,5 @@
             android:text="@string/btn_scan3"
             android:backgroundTint="@color/purple_200"/>
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_scan4"
-            android:backgroundTint="@color/purple_300"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
