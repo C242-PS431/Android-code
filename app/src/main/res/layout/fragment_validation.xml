@@ -89,11 +89,40 @@
 
         </RadioGroup>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_scan8"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupStore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/radioBenar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/RG7" />
+
+            <RadioButton
+                android:id="@+id/radioSalah"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/RG9" />
+
+        </RadioGroup>
+
+
         <Button
             android:id="@+id/buttonResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/btn_scan5"
-            android:backgroundTint="@color/green_300"/>
+            android:backgroundTint="@color/green_300"
+            />
     </LinearLayout>
 </FrameLayout>

@@ -15,12 +15,16 @@
     <string name="text_scan5">Bagaimana Bau dan Tekstur Sayur/Buah Ini?</string>
     <string name="text_scan6">Apakah sayur/buah ini memiliki bau segar atau menyengat?</string>
     <string name="text_scan7">Bagaimana tekstur sayur/buah ini?</string>
+    <string name="text_scan8">Apakah toko yang menjual sayur dan buah tersebut sudah terverifikasi aman?</string>
     <string name="RG1">Segar</string>
     <string name="RG2">Busuk</string>
     <string name="RG3">Netral</string>
     <string name="RG4">Keras</string>
     <string name="RG5">Lembek</string>
     <string name="RG6">Normal</string>
+    <string name="RG7">iya, sudah terverifikasi</string>
+    <string name="RG8">Ragu-Ragu</string>
+    <string name="RG9">Tidak, belum terverifikasi</string>
     <string name="btn_scan5">Lihat Hasil Scan</string>
     <string name="btn_scan3">Scan Sayur dan Buah Lainnya</string>
     <string name="btn_scan4">Next</string>
@@ -33,4 +37,8 @@
     <string name="text_store2">Nama Toko</string>
     <string name="text_store3">Status Toko</string>
     <string name="text_store4">Lokasi Toko</string>
+    <string name="freshness_score_label">Score Kesegaran: %1$s</string>
+    <string name="produce_label">Produce: %1$s</string>
+    <string name="consumable_label">Layak Konsumsi</string>
+    <string name="not_consumable_label">Tidak Layak Konsumsi</string>
 </resources>

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_dashboard">
+    app:startDestination="@+id/navigation_scan">
 
     <fragment
         android:id="@+id/navigation_profile"
@@ -21,10 +21,28 @@
         android:id="@+id/navigation_scan"
         android:name="com.example.freshguard.ui.scan.ScanFragment"
         android:label="@string/title_scan"
-        tools:layout="@layout/fragment_scan" />
+        tools:layout="@layout/fragment_scan" >
+        <action
+            android:id="@+id/action_navigation_scan_to_validationFragment"
+            app:destination="@id/validationFragment" />
+    </fragment>
     <fragment
         android:id="@+id/trackingFragment"
         android:name="com.example.freshguard.ui.tracking.TrackingFragment"
         android:label="@string/title_tracking"
         tools:layout="@layout/fragment_tracking" />
+    <fragment
+        android:id="@+id/validationFragment"
+        android:name="com.example.freshguard.ui.scan.ValidationFragment"
+        android:label="fragment_validation"
+        tools:layout="@layout/fragment_validation" >
+        <action
+            android:id="@+id/action_validationFragment_to_scanResultActivity"
+            app:destination="@id/scanResultActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/scanResultActivity"
+        android:name="com.example.freshguard.ui.scan.ScanResultActivity"
+        android:label="activity_scan_result"
+        tools:layout="@layout/activity_scan_result" />
 </navigation>
