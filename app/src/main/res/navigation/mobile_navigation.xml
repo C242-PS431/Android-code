@@ -28,9 +28,9 @@
     </fragment>
     <fragment
         android:id="@+id/trackingFragment"
-        android:name="com.example.freshguard.ui.tracking.TrackingFragment"
+        android:name="com.example.freshguard.ui.tracking.HistoryFragment"
         android:label="@string/title_tracking"
-        tools:layout="@layout/fragment_tracking" />
+        tools:layout="@layout/fragment_history" />
     <fragment
         android:id="@+id/validationFragment"
         android:name="com.example.freshguard.ui.scan.ValidationFragment"

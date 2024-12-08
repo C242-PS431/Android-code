@@ -1,16 +1,16 @@
 package com.example.freshguard.ui.scan
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Base64
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -22,64 +22,94 @@ class ScanFragment : Fragment() {
     private var _binding: FragmentScanBinding? = null
     private val binding get() = _binding!!
     private lateinit var sharedViewModel: SharedViewModel
-    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Menginisialisasi ViewModel berbagi data
-        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
-
         // Inisialisasi ActivityResultLauncher untuk memilih gambar dari galeri
-        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val imageUri = result.data?.data
                 if (imageUri != null) {
-                    try {
-                        val inputStream = requireContext().contentResolver.openInputStream(imageUri)
-                        val imageBytes = inputStream?.readBytes()
-                        inputStream?.close()
-
-                        if (imageBytes != null) {
-                            // Konversi gambar ke Base64 dan simpan ke SharedViewModel
-                            sharedViewModel.imageBase64 = Base64.encodeToString(imageBytes, Base64.DEFAULT)
-                            binding.imageScan.setImageURI(imageUri)
-                        } else {
-                            Toast.makeText(requireContext(), "Gagal membaca gambar", Toast.LENGTH_SHORT).show()
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        Toast.makeText(requireContext(), "Terjadi kesalahan saat membaca gambar", Toast.LENGTH_SHORT).show()
-                    }
+                    sharedViewModel.imageUri = imageUri
+                    binding.imageScan.setImageURI(imageUri)
                 } else {
                     Toast.makeText(requireContext(), "Tidak ada gambar yang dipilih", Toast.LENGTH_SHORT).show()
                 }
+            } else {
+                Toast.makeText(requireContext(), "Gagal membuka galeri", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Inisialisasi ActivityResultLauncher untuk meminta izin
+        requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            if (permissions[Manifest.permission.READ_MEDIA_IMAGES] == true ||
+                permissions[Manifest.permission.READ_EXTERNAL_STORAGE] == true) {
+                openGallery() // Akses galeri jika izin diberikan
+            } else {
+                Toast.makeText(requireContext(), "Izin akses penyimpanan ditolak", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: android.view.LayoutInflater, container: android.view.ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): android.view.View {
         _binding = FragmentScanBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Aksi ketika tombol galeri ditekan
+        sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
+
+        // Aksi tombol galeri
         binding.buttonGallery.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            activityResultLauncher.launch(intent)
+            if (hasStoragePermission()) {
+                openGallery()
+            } else {
+                requestStoragePermission()
+            }
         }
 
-        // Aksi ketika tombol validasi ditekan
+        // Aksi tombol validasi
         binding.buttonValidation.setOnClickListener {
-            // Navigasi ke ValidationFragment
-            findNavController().navigate(R.id.action_navigation_scan_to_validationFragment)
+            if (sharedViewModel.imageUri != null) {
+                findNavController().navigate(R.id.action_navigation_scan_to_validationFragment)
+            } else {
+                Toast.makeText(requireContext(), "Pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show()
+            }
         }
+    }
+
+    // Periksa apakah izin sudah diberikan
+    private fun hasStoragePermission(): Boolean {
+        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Manifest.permission.READ_MEDIA_IMAGES
+        } else {
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        }
+        return ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED
+    }
+
+    // Meminta izin kepada pengguna
+    private fun requestStoragePermission() {
+        val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
+        } else {
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+        requestPermissionLauncher.launch(permissions)
+    }
+
+    // Membuka galeri
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        galleryLauncher.launch(intent)
     }
 
     override fun onDestroyView() {

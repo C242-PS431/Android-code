@@ -56,4 +56,6 @@ dependencies {
     implementation (libs.retrofit2.converter.gson)
     implementation (libs.osmdroid.android)
     implementation (libs.androidx.recyclerview)
+    implementation (libs.glide)
+    implementation (libs.okhttp)
 }

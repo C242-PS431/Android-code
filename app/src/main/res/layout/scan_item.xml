@@ -47,12 +47,19 @@
 
             <!-- Deskripsi -->
             <TextView
-                android:id="@+id/tv_decs_text"
+                android:id="@+id/tv_score_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_track5"
                 android:textSize="14sp"
                  />
+            <TextView
+                android:id="@+id/tv_create_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_track6"
+                android:textSize="14sp"
+                />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

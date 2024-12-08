@@ -28,33 +28,35 @@ data class ScanResult(
 	@field:SerializedName("scanned_at")
 	val scannedAt: String? = null,
 
+	@field:SerializedName("texture")
+	val texture: String? = null,
+
 	@field:SerializedName("created_at")
 	val createdAt: String? = null,
 
 	@field:SerializedName("id")
 	val id: String? = null,
 
-	@field:SerializedName("produce")
-	val produce: String? = null,
-
-	@field:SerializedName("texture")
-	val texture: String? = null,
-
 	@field:SerializedName("smell")
 	val smell: String? = null,
 
 	@field:SerializedName("verified_store")
-	val verifiedStore: Boolean? = null
-) {
-	// Fungsi untuk menentukan apakah produk layak konsumsi
-	fun isConsumable(): Boolean {
-		// Menentukan berdasarkan skor kesegaran, tekstur, dan bau
-		return (
-				(freshnessScore?.toIntOrNull() ?: 0) >= 50 && // Misalnya skor lebih dari 50 dianggap layak
-						texture != "bad" && // Jika teksturnya buruk
-						smell != "bad" && // Jika baunya buruk
-						verifiedStore == true // Jika berasal dari toko yang terverifikasi
-				)
-	}
+	val verifiedStore: Boolean? = null,
 
+	@field:SerializedName("produce")
+	val produce: String? = null
+) {
+	/**
+	 * Fungsi untuk menentukan apakah buah/sayur layak dikonsumsi.
+	 * Logika: freshnessScore harus >= 0.5, smell "fresh", texture "normal",
+	 * dan verifiedStore harus true.
+	 */
+	fun isConsumable(): Boolean {
+		val freshnessScoreValue = freshnessScore?.toDoubleOrNull() ?: 0.0
+
+		return freshnessScoreValue >= 0.5 &&
+				smell.equals("fresh", ignoreCase = true) &&
+				texture.equals("normal", ignoreCase = true) &&
+				verifiedStore == true
+	}
 }

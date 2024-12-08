@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 object ApiConfig {
     private const val BASE_URL = "http://35.219.27.170"
     // Tambahkan token statis sementara
-    private const val STATIC_TOKEN = "Bearer 31|IwQLhpHEiQpCiKXKQBZcZYzBgaN6wAYxuT3Rlfrve05a75a3"
+    private const val STATIC_TOKEN = "Bearer 36|gFMlrLjPfQA40yT6h5wGy4Ed5PITKGspXqbyLxP96dee61c2"
 
     private val client: OkHttpClient
         get() = OkHttpClient.Builder()
@@ -32,4 +32,7 @@ object ApiConfig {
     
     val apiScanService: ApiScan
         get() = retrofit.create(ApiScan::class.java)
+
+    val apiHistoryService: ApiHistory
+        get() = retrofit.create(ApiHistory::class.java)
 }

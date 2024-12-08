@@ -30,9 +30,10 @@
     <string name="btn_scan4">Next</string>
     <string name="text_track1">Historis Scan Harian Kamu</string>
     <string name="text_track2">Tanggal Scan: dd/mm/yyyy</string>
-    <string name="text_track3">text....</string>
+    <string name="text_track3">ini dia riwayat scan kamu, pertahankan pola hidup sehat mu!</string>
     <string name="text_track4">Nama Sayur/Buah</string>
-    <string name="text_track5">Dekskripsi</string>
+    <string name="text_track5">Score Kesegaran: %1$s</string>
+    <string name="text_track6">Tanggal Scan: %s</string>
     <string name="text_store1">Daftar Toko yang menjual sayur dan buah: </string>
     <string name="text_store2">Nama Toko</string>
     <string name="text_store3">Status Toko</string>

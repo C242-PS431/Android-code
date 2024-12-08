@@ -1,6 +1,7 @@
 package com.example.freshguard.ui.scan
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,11 +11,13 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.freshguard.R
 import com.example.freshguard.data.repository.ScanRepository
-import com.example.freshguard.data.request.ScanRequestBody
 import com.example.freshguard.data.response.ScanResponse
-import com.example.freshguard.data.response.ScanResult
 import com.example.freshguard.data.retrofit.ApiConfig
 import com.example.freshguard.databinding.FragmentValidationBinding
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
 class ValidationFragment : Fragment() {
     private lateinit var binding: FragmentValidationBinding
@@ -31,19 +34,20 @@ class ValidationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentValidationBinding.bind(view)
-
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
-        viewModel = ViewModelProvider(this, ScanViewModelFactory(ScanRepository(ApiConfig.apiScanService))).get(ScanViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            ScanViewModelFactory(requireContext(), ScanRepository(ApiConfig.apiScanService, requireContext()))
+        ).get(ScanViewModel::class.java)
 
         viewModel.scanResult.observe(viewLifecycleOwner) { response ->
             if (response != null) {
                 navigateToResultPage(response)
             } else {
-                Toast.makeText(requireContext(), "Gagal mendapatkan hasil, coba lagi!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Gagal mendapatkan hasil: ${viewModel.errorMessage}", Toast.LENGTH_SHORT).show()
             }
         }
-        
+
         binding.buttonResult.setOnClickListener {
 
             val smell = when (binding.radioGroupBau.checkedRadioButtonId) {
@@ -64,23 +68,30 @@ class ValidationFragment : Fragment() {
                 R.id.radioSalah -> "Salah"
                 else -> null
             }
-            if (smell != null && texture != null && verifiedStore != null && sharedViewModel.imageBase64 != null) {
+            if (smell != null && texture != null && verifiedStore != null && sharedViewModel.imageUri != null) {
                 // Konversi smell dan texture ke bahasa Inggris
                 val (smellEnglish, textureEnglish) = translateToEnglish(smell, texture)
                 val verifiedStoreEnglish = if (verifiedStore == "Benar") "True" else "False"
+                val imageUri = sharedViewModel.imageUri!!
 
-                // Buat request body
-                val requestBody = ScanRequestBody(
-                    image = sharedViewModel.imageBase64!!,
-                    smell = smellEnglish,
-                    texture = textureEnglish,
-                    verifiedStore = verifiedStoreEnglish
-                )
-                // Kirim ke API
-                viewModel.postScanFreshness("Bearer [31|IwQLhpHEiQpCiKXKQBZcZYzBgaN6wAYxuT3Rlfrve05a75a3]", requestBody)
-                Toast.makeText(requireContext(), "Data berhasil dikirim", Toast.LENGTH_SHORT).show()
+                // Membuat MultipartBody.Part dari URI
+                val imagePart = prepareFilePart("image", imageUri)
+
+                if (imagePart != null) {
+                    // Kirim data ke ViewModel
+                    viewModel.postScanFreshness(
+                        imageUri = sharedViewModel.imageUri!!,
+                        smell = smellEnglish,
+                        texture = textureEnglish,
+                        verifiedStore = verifiedStoreEnglish
+                    )
+
+                    Toast.makeText(requireContext(), "Data berhasil dikirim", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireContext(), "File gambar terlalu besar, maksimal 5MB", Toast.LENGTH_SHORT).show()
+                }
             } else {
-                Toast.makeText(requireContext(), "mohon Lengkapi semua data dulu yaa", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Mohon lengkapi semua data terlebih dahulu", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -93,9 +104,10 @@ class ValidationFragment : Fragment() {
                 putExtra("SCORE", it.freshnessScore)
                 putExtra("PRODUCE", it.produce)
                 putExtra("IS_CONSUMABLE", it.isConsumable()) // Menentukan apakah produk layak konsumsi
-                putExtra("IMAGE_BASE64", sharedViewModel.imageBase64)
             }
             startActivity(intent)
+        } ?: run {
+            Toast.makeText(requireContext(), "Gagal mendapatkan hasil, coba lagi!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -116,5 +128,29 @@ class ValidationFragment : Fragment() {
             smellMap[smell] ?: "Unknown",
             textureMap[texture] ?: "Unknown"
         )
+    }
+
+    private fun prepareFilePart(fieldName: String, uri: Uri): MultipartBody.Part? {
+        val contentResolver = requireContext().contentResolver
+        val inputStream = contentResolver.openInputStream(uri)
+        val file = File(requireContext().cacheDir, "upload_image.jpg")
+
+        inputStream?.use { input ->
+            file.outputStream().use { output ->
+                input.copyTo(output)
+            }
+        }
+
+        // Validasi ukuran file
+        val fileSizeInMB = file.length() / (1024 * 1024)
+        if (fileSizeInMB > 5) {
+            return null // File terlalu besar
+        }
+
+        val requestBody = RequestBody.create(
+            contentResolver.getType(uri)?.toMediaTypeOrNull(),
+            file
+        )
+        return MultipartBody.Part.createFormData(fieldName, file.name, requestBody)
     }
 }
