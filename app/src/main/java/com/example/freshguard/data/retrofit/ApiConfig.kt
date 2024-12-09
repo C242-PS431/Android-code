@@ -31,9 +31,9 @@ object ApiConfig {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     
-    val apiScanService: ApiService
-        get() = retrofit.create(ApiService::class.java)
+    val apiScanService: ApiScan
+        get() = retrofit.create(ApiScan::class.java)
 
-    val apiHistoryService: ApiService
-        get() = retrofit.create(ApiService::class.java)
+    val apiHistoryService: ApiHistory
+        get() = retrofit.create(ApiHistory::class.java)
 }
