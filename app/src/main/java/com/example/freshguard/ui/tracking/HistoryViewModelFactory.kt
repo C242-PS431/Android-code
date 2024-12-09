@@ -3,7 +3,6 @@ package com.example.freshguard.ui.tracking
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.freshguard.data.repository.HistoryRepository
-import com.example.freshguard.ui.scan.ScanViewModel
 
 class HistoryViewModelFactory (private val repository: HistoryRepository): ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")

@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_scan,
                 R.id.navigation_dashboard,
                 R.id.navigation_profile,
-                R.id.navigation_tracking
+                R.id.HistoryFragment
             )
         )
 

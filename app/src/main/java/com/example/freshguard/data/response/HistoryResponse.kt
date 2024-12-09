@@ -86,13 +86,11 @@ data class DataItem(
 	val smell: String? = null,
 
 	@field:SerializedName("verified_store")
-	val verifiedStore: Boolean? = null,
+	val verifiedStore: Int? = null,
 
 	@field:SerializedName("produce")
 	val produce: Produce? = null,
 
-    @field:SerializedName("img")
-    val img: String? = null
 )
 
 data class LinksItem(

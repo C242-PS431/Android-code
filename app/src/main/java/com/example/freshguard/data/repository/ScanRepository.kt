@@ -5,7 +5,6 @@ import android.net.Uri
 import com.example.freshguard.data.response.ScanResponse
 import com.example.freshguard.data.retrofit.ApiScan
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Response
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody

@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
         android:background="@color/green_300">
@@ -24,13 +24,9 @@
             android:textColor="@color/purple_300"
             android:textStyle="bold"
             android:textAlignment="center"
-            android:background="@drawable/rounded_background"/>
+            android:background="@drawable/rounded_background"
+            android:layout_margin="30dp"/>
 
-        <TextView
-            android:id="@+id/tv_date_scan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_track2"/>
     </LinearLayout>
 
     <ProgressBar
@@ -67,7 +63,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_track"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="60dp"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -6,31 +6,39 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.freshguard.R
+import com.example.freshguard.data.repository.HistoryRepository
+import com.example.freshguard.data.retrofit.ApiConfig
 import com.example.freshguard.databinding.FragmentHistoryBinding
 
 class HistoryFragment : Fragment() {
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: HistoryViewModel by viewModels()
+    private lateinit var viewModel: HistoryViewModel
     private lateinit var adapter: HistoryAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-       _binding = FragmentHistoryBinding.inflate(inflater, container, false)
+        _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val apiHistory = ApiConfig.apiHistoryService
+
+        // Inisialisasi Repository dan ViewModel dengan Factory
+        val repository = HistoryRepository(apiHistory)
+        val factory = HistoryViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, factory)[HistoryViewModel::class.java]
+
+        adapter = HistoryAdapter { dataItem ->
+            Toast.makeText(requireContext(), "Clicked: ${dataItem.produce?.name}", Toast.LENGTH_SHORT).show()
+        }
 
         setupRecyclerView()
         observeHistoryData()
@@ -68,6 +76,7 @@ class HistoryFragment : Fragment() {
             adapter = this@HistoryFragment.adapter
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null // Menghapus binding untuk menghindari memory leak

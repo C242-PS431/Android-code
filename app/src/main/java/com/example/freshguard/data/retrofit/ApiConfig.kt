@@ -16,6 +16,7 @@ object ApiConfig {
                 val originalRequest = chain.request()
                 val modifiedRequest = originalRequest.newBuilder()
                     .addHeader("Authorization", STATIC_TOKEN) // Menggunakan token statis
+                    .addHeader("Accept", "application/json")
                     .build()
                 chain.proceed(modifiedRequest)
             }

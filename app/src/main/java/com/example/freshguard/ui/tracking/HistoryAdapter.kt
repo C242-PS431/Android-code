@@ -21,12 +21,6 @@ class HistoryAdapter(
                 tvNameText.text = data.produce?.name ?: root.context.getString(R.string.text_track4)
                 tvScoreText.text = root.context.getString(R.string.freshness_score_label, data.freshnessScore ?: "-")
                 tvCreateAt.text = root.context.getString(R.string.text_track6, data.createdAt ?: "-")
-                Glide.with(root.context)
-                    .load(data.img)
-                    .placeholder(R.drawable.baseline_insert_photo_24)
-                    .error(R.drawable.baseline_insert_photo_24)
-                    .into(imgScanResult)
-
                 // Event klik item
                 root.setOnClickListener {
                     onItemClick(data)

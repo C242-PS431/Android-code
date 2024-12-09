@@ -5,17 +5,20 @@
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/dashboard"
         android:title="@string/title_dashboard" />
+
     <item
-        android:id="@+id/navigation_tracking"
+        android:id="@+id/HistoryFragment"
         android:icon="@drawable/tracking"
         android:title="@string/title_tracking" />
+
+    <item
+        android:id="@+id/navigation_scan"
+        android:icon="@drawable/baseline_document_scanner_24"
+        android:title="@string/title_scan" />
+
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/account"
         android:title="@string/title_profile" />
-    <item
-        android:id="@+id/navigation_scan"
-        android:icon="@drawable/account"
-        android:title="@string/title_scan" />
 
 </menu>

@@ -119,6 +119,13 @@
                     android:text="@string/RG9" />
             </RadioGroup>
 
+<!--            <Button-->
+<!--                android:id="@+id/buttonSend"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/btn_scan6"-->
+<!--                android:backgroundTint="@color/purple_200" />-->
+
             <Button
                 android:id="@+id/buttonResult"
                 android:layout_width="match_parent"

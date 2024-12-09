@@ -27,14 +27,15 @@
             app:destination="@id/validationFragment" />
     </fragment>
     <fragment
-        android:id="@+id/trackingFragment"
+        android:id="@+id/HistoryFragment"
         android:name="com.example.freshguard.ui.tracking.HistoryFragment"
         android:label="@string/title_tracking"
         tools:layout="@layout/fragment_history" />
+
     <fragment
         android:id="@+id/validationFragment"
         android:name="com.example.freshguard.ui.scan.ValidationFragment"
-        android:label="fragment_validation"
+        android:label="@string/title_valid"
         tools:layout="@layout/fragment_validation" >
         <action
             android:id="@+id/action_validationFragment_to_scanResultActivity"
@@ -43,6 +44,6 @@
     <activity
         android:id="@+id/scanResultActivity"
         android:name="com.example.freshguard.ui.scan.ScanResultActivity"
-        android:label="activity_scan_result"
+        android:label="@string/title_result"
         tools:layout="@layout/activity_scan_result" />
 </navigation>

@@ -1,6 +1,8 @@
 package com.example.freshguard.ui.scan
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -17,7 +19,9 @@ import com.example.freshguard.databinding.FragmentValidationBinding
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
 
 class ValidationFragment : Fragment() {
     private lateinit var binding: FragmentValidationBinding
@@ -44,7 +48,12 @@ class ValidationFragment : Fragment() {
             if (response != null) {
                 navigateToResultPage(response)
             } else {
-                Toast.makeText(requireContext(), "Gagal mendapatkan hasil: ${viewModel.errorMessage}", Toast.LENGTH_SHORT).show()
+                viewModel.errorMessage.observe(viewLifecycleOwner) { error ->
+                    if (error != null) {
+                        Toast.makeText(requireContext(), "Gagal mendapatkan hasil: $error", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
             }
         }
 
@@ -71,7 +80,7 @@ class ValidationFragment : Fragment() {
             if (smell != null && texture != null && verifiedStore != null && sharedViewModel.imageUri != null) {
                 // Konversi smell dan texture ke bahasa Inggris
                 val (smellEnglish, textureEnglish) = translateToEnglish(smell, texture)
-                val verifiedStoreEnglish = if (verifiedStore == "Benar") "True" else "False"
+                val verifiedStoreEnglish = if (verifiedStore == "Benar") "true" else "false"
                 val imageUri = sharedViewModel.imageUri!!
 
                 // Membuat MultipartBody.Part dari URI
@@ -100,12 +109,10 @@ class ValidationFragment : Fragment() {
         // Ambil scanResult dari response
         val scanResult = response.data?.scanResult
         scanResult?.let {
-            val imageUri = sharedViewModel.imageUri
             val intent = Intent(requireContext(), ScanResultActivity::class.java).apply {
                 putExtra("SCORE", it.freshnessScore)
                 putExtra("PRODUCE", it.produce)
                 putExtra("IS_CONSUMABLE", it.isConsumable()) // Menentukan apakah produk layak konsumsi
-                putExtra("IMAGE_URI", imageUri.toString())
             }
             startActivity(intent)
         } ?: run {
@@ -113,24 +120,26 @@ class ValidationFragment : Fragment() {
         }
     }
 
-    private fun translateToEnglish(smell: String, texture: String): Pair<String, String>  {
+    private fun translateToEnglish(smell: String?, texture: String?): Pair<String, String> {
         val smellMap = mapOf(
-            "Segar" to "Fresh",
-            "Busuk" to "Rotten",
-            "Netral" to "Neutral"
+            "Segar" to "fresh",
+            "Busuk" to "rotten",
+            "Netral" to "neutral"
         )
 
         val textureMap = mapOf(
-            "Keras" to "Hard",
-            "Lembek" to "Soft",
-            "Normal" to "Normal"
+            "Keras" to "hard",
+            "Lembek" to "soft",
+            "Normal" to "normal"
         )
 
+        // Berikan nilai default "neutral" untuk smell dan "normal" untuk texture jika null
         return Pair(
-            smellMap[smell] ?: "Unknown",
-            textureMap[texture] ?: "Unknown"
+            smellMap[smell] ?: "neutral",
+            textureMap[texture] ?: "normal"
         )
     }
+
 
     private fun prepareFilePart(uri: Uri): MultipartBody.Part? {
         val contentResolver = requireContext().contentResolver
@@ -143,16 +152,63 @@ class ValidationFragment : Fragment() {
             }
         }
 
-        // Validasi ukuran file
-        val fileSizeInMB = file.length() / (1024 * 1024)
+        // Menghitung ukuran file sebelum kompresi
+        var fileSizeInMB = file.length() / (1024 * 1024)
+
+        // Jika ukuran file lebih dari 5MB, kita kompres menjadi 5MB
         if (fileSizeInMB > 5) {
-            return null // File terlalu besar
+            val compressedFile = compressImage(file, 5) // Kompres menjadi maksimal 5MB
+            fileSizeInMB = compressedFile.length() / (1024 * 1024)
+            file.delete() // Hapus file lama yang besar
+            compressedFile.renameTo(file) // Gantilah file yang lama dengan file yang sudah dikompres
         }
 
+        // Tidak mengembalikan null, meskipun ukuran file lebih besar dari 5MB setelah kompresi
+        // Jika file masih lebih besar dari 5MB, tetap lanjutkan proses
+        if (fileSizeInMB > 5) {
+            Toast.makeText(requireContext(), "File gambar lebih besar dari 5MB, tapi tetap akan dikirim", Toast.LENGTH_SHORT).show()
+        }
+
+        // Membuat RequestBody untuk gambar
         val requestBody = RequestBody.create(
             contentResolver.getType(uri)?.toMediaTypeOrNull(),
             file
         )
+
+        // Mengembalikan file sebagai MultipartBody.Part untuk dikirim ke API
         return MultipartBody.Part.createFormData("image", file.name, requestBody)
     }
+
+    // Fungsi untuk mengompres gambar agar ukuran file tidak lebih dari 5MB
+    private fun compressImage(imageFile: File, maxSizeMB: Int): File {
+        val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
+
+        // Tentukan kualitas kompresi
+        val outputStream = ByteArrayOutputStream()
+        var quality = 100 // Mulai dengan kualitas gambar maksimal
+
+        // Kompres gambar hingga ukuran yang lebih kecil, sesuaikan kualitas jika perlu
+        do {
+            outputStream.reset() // Reset output stream agar tidak menambah data sebelumnya
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
+
+            // Menghitung ukuran file setelah kompresi
+            val compressedSizeInMB = outputStream.size() / (1024 * 1024)
+            if (compressedSizeInMB <= maxSizeMB) {
+                break // Jika sudah mencapai ukuran yang diinginkan, keluar dari loop
+            }
+
+            // Kurangi kualitas kompresi jika ukuran masih lebih besar dari maxSizeMB
+            quality -= 5
+        } while (quality > 10) // Stop jika kualitas terlalu rendah (di bawah 10%)
+
+        // Menyimpan gambar yang sudah terkompres
+        val compressedFile = File(requireContext().cacheDir, "compressed_image.jpg")
+        FileOutputStream(compressedFile).use {
+            it.write(outputStream.toByteArray())
+        }
+
+        return compressedFile
+    }
+
 }

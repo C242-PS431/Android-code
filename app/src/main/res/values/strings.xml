@@ -2,8 +2,10 @@
     <string name="app_name">Freshguard</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_scan">Scan</string>
-    <string name="title_tracking">Track Harian</string>
+    <string name="title_tracking">History</string>
     <string name="title_profile">Profile</string>
+    <string name="title_valid">Validasi</string>
+    <string name="title_result">Hasil Scan</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_scan1">Scan Disini!</string>
     <string name="img_scan1">Photo scan</string>
@@ -26,6 +28,7 @@
     <string name="RG8">Ragu-Ragu</string>
     <string name="RG9">Tidak, belum terverifikasi</string>
     <string name="btn_scan5">Lihat Hasil Scan</string>
+    <string name="btn_scan6">Kirim data</string>
     <string name="btn_scan3">Scan Sayur dan Buah Lainnya</string>
     <string name="btn_scan4">Next</string>
     <string name="text_track1">Historis Scan Harian Kamu</string>
@@ -34,12 +37,16 @@
     <string name="text_track4">Nama Sayur/Buah</string>
     <string name="text_track5">Score Kesegaran: %1$s</string>
     <string name="text_track6">Tanggal Scan: %s</string>
+    <string name="text_track7">Berikut hasil scanning sayur dan buah kamu:</string>
     <string name="text_store1">Daftar Toko yang menjual sayur dan buah: </string>
     <string name="text_store2">Nama Toko</string>
     <string name="text_store3">Status Toko</string>
     <string name="text_store4">Lokasi Toko</string>
     <string name="freshness_score_label">Score Kesegaran: %1$s</string>
-    <string name="produce_label">Produce: %1$s</string>
+    <string name="produce_label">Jenis Produk: %1$s</string>
     <string name="consumable_label">Layak Konsumsi</string>
     <string name="not_consumable_label">Tidak Layak Konsumsi</string>
+    <string name="consumable_yes">Produk ini layak dikonsumsi</string>
+    <string name="consumable_no">Produk ini tidak layak dikonsumsi</string>
+    <string name="unknown">tidak diketahui</string>
 </resources>

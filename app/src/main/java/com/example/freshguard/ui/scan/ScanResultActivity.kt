@@ -1,7 +1,6 @@
 package com.example.freshguard.ui.scan
 
-import android.graphics.BitmapFactory
-import android.net.Uri
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -21,16 +20,22 @@ class ScanResultActivity : AppCompatActivity() {
         val score = intent.getStringExtra("SCORE")
         val produce = intent.getStringExtra("PRODUCE")
         val isConsumable = intent.getBooleanExtra("IS_CONSUMABLE", false)
-        val imageUriString = intent.getStringExtra("IMAGE_URI") // Ambil IMAGE_URI yang dikirimkan dari ValidationFragment
 
-        binding.result1.text = score ?: "tidak diketahui"
-        binding.result2.text = produce ?: "tidak diketahui"
-        binding.tvResultText.text = if (isConsumable) "Produk ini layak dikonsumsi" else "Produk ini tidak layak dikonsumsi"
+        // Menambahkan deskripsi pada hasil
+        binding.result1.text = getString(R.string.freshness_score_label, score ?: getString(R.string.unknown))
+        binding.result2.text = getString(R.string.produce_label, produce ?: getString(R.string.unknown))
+        binding.tvResultText.text = if (isConsumable) {
+            getString(R.string.consumable_yes)
+        } else {
+            getString(R.string.consumable_no)
+        }
 
-        // Menampilkan gambar jika ada
-        imageUriString?.let {
-            val imageUri = Uri.parse(it) // Mengonversi string menjadi Uri
-            binding.imgScanResult.setImageURI(imageUri) // Menampilkan gambar dari URI
+        // Menangani klik tombol kembali ke halaman Scan
+        binding.button.setOnClickListener {
+            // Membuka ScanActivity dan menutup ScanResultActivity
+            val intent = Intent(this, ScanFragment::class.java)
+            startActivity(intent)
+            finish() // Menutup ScanResultActivity
         }
     }
 }
