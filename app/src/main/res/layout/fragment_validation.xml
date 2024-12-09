@@ -5,124 +5,128 @@
     android:layout_height="match_parent"
     tools:context=".ui.scan.ValidationFragment">
 
-    <LinearLayout
+    <!-- Membungkus LinearLayout dengan ScrollView -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:gravity="center"
-        tools:ignore="UselessParent">
+        android:layout_height="match_parent"
+        android:padding="10dp">
 
-        <TextView
-            android:id="@+id/textView3"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/text_scan5"
-            android:textAlignment="center"
-            android:textColor="@color/purple_300"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginVertical="10dp"/>
+            android:orientation="vertical"
+            android:gravity="center"
+            tools:ignore="UselessParent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_scan6"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp"
-            android:textAlignment="center"/>
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text_scan5"
+                android:textAlignment="center"
+                android:textColor="@color/purple_300"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginVertical="10dp"/>
 
-        <RadioGroup
-            android:id="@+id/radioGroupBau"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/radioSegar"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/RG1" />
+                android:text="@string/text_scan6"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"
+                android:textAlignment="center"/>
 
-            <RadioButton
-                android:id="@+id/radioBusuk"
+            <RadioGroup
+                android:id="@+id/radioGroupBau"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/radioSegar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/RG1" />
+
+                <RadioButton
+                    android:id="@+id/radioBusuk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/RG2" />
+
+                <RadioButton
+                    android:id="@+id/radioNetral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/RG3" />
+            </RadioGroup>
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/RG2" />
+                android:text="@string/text_scan7"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp" />
 
-            <RadioButton
-                android:id="@+id/radioNetral"
+            <RadioGroup
+                android:id="@+id/radioGroupTekstur"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/radioKeras"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/RG4" />
+
+                <RadioButton
+                    android:id="@+id/radioLembek"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/RG5" />
+
+                <RadioButton
+                    android:id="@+id/radioNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/RG6" />
+            </RadioGroup>
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/RG3" />
-        </RadioGroup>
+                android:text="@string/text_scan8"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_scan7"
-            android:textSize="16sp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp" />
+            <RadioGroup
+                android:id="@+id/radioGroupStore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <RadioGroup
-            android:id="@+id/radioGroupTekstur"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <RadioButton
+                    android:id="@+id/radioBenar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/RG7" />
 
-            <RadioButton
-                android:id="@+id/radioKeras"
-                android:layout_width="wrap_content"
+                <RadioButton
+                    android:id="@+id/radioSalah"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/RG9" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/buttonResult"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/RG4" />
+                android:text="@string/btn_scan5"
+                android:backgroundTint="@color/green_300" />
 
-            <RadioButton
-                android:id="@+id/radioLembek"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/RG5" />
+        </LinearLayout>
+    </ScrollView>
 
-            <RadioButton
-                android:id="@+id/radioNormal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/RG6" />
-
-        </RadioGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_scan8"
-            android:textSize="16sp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp" />
-
-        <RadioGroup
-            android:id="@+id/radioGroupStore"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/radioBenar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/RG7" />
-
-            <RadioButton
-                android:id="@+id/radioSalah"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/RG9" />
-
-        </RadioGroup>
-
-
-        <Button
-            android:id="@+id/buttonResult"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_scan5"
-            android:backgroundTint="@color/green_300"
-            />
-    </LinearLayout>
 </FrameLayout>

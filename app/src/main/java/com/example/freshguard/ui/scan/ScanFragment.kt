@@ -23,6 +23,7 @@ class ScanFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
+    private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,13 +44,39 @@ class ScanFragment : Fragment() {
             }
         }
 
+        // Inisialisasi ActivityResultLauncher untuk mengambil gambar dengan kamera
+        cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val imageUri = result.data?.data
+                if (imageUri != null) {
+                    sharedViewModel.imageUri = imageUri
+                    binding.imageScan.setImageURI(imageUri)
+                } else {
+                    Toast.makeText(requireContext(), "Gagal mengambil gambar", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(requireContext(), "Gagal membuka kamera", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         // Inisialisasi ActivityResultLauncher untuk meminta izin
         requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            if (permissions[Manifest.permission.READ_MEDIA_IMAGES] == true ||
-                permissions[Manifest.permission.READ_EXTERNAL_STORAGE] == true) {
-                openGallery() // Akses galeri jika izin diberikan
+            val storageGranted = when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ->
+                    permissions[Manifest.permission.READ_MEDIA_IMAGES] == true
+                else ->
+                    permissions[Manifest.permission.READ_EXTERNAL_STORAGE] == true
+            }
+            val cameraGranted = permissions[Manifest.permission.CAMERA] == true
+
+            if (storageGranted && cameraGranted) {
+                if (binding.buttonGallery.isPressed) {
+                    openGallery()
+                } else if (binding.buttonCamera.isPressed) {
+                    openCamera()
+                }
             } else {
-                Toast.makeText(requireContext(), "Izin akses penyimpanan ditolak", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Izin akses ditolak", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -76,6 +103,15 @@ class ScanFragment : Fragment() {
             }
         }
 
+        // Aksi tombol kamera
+        binding.buttonCamera.setOnClickListener {
+            if (hasCameraPermission()) {
+                openCamera()
+            } else {
+                requestCameraPermission()
+            }
+        }
+
         // Aksi tombol validasi
         binding.buttonValidation.setOnClickListener {
             if (sharedViewModel.imageUri != null) {
@@ -86,30 +122,47 @@ class ScanFragment : Fragment() {
         }
     }
 
-    // Periksa apakah izin sudah diberikan
+    // Periksa apakah izin sudah diberikan untuk akses penyimpanan
     private fun hasStoragePermission(): Boolean {
-        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Manifest.permission.READ_MEDIA_IMAGES
-        } else {
-            Manifest.permission.READ_EXTERNAL_STORAGE
+        return when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ->
+                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
+            else ->
+                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
         }
-        return ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED
     }
 
-    // Meminta izin kepada pengguna
+    // Periksa apakah izin sudah diberikan untuk akses kamera
+    private fun hasCameraPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+    }
+
+    // Meminta izin akses penyimpanan
     private fun requestStoragePermission() {
-        val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
-        } else {
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+        val permissions = when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ->
+                arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
+            else ->
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
         requestPermissionLauncher.launch(permissions)
+    }
+
+    // Meminta izin akses kamera
+    private fun requestCameraPermission() {
+        requestPermissionLauncher.launch(arrayOf(Manifest.permission.CAMERA))
     }
 
     // Membuka galeri
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryLauncher.launch(intent)
+    }
+
+    // Membuka kamera
+    private fun openCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraLauncher.launch(intent)
     }
 
     override fun onDestroyView() {

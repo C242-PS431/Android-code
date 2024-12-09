@@ -75,12 +75,12 @@ class ValidationFragment : Fragment() {
                 val imageUri = sharedViewModel.imageUri!!
 
                 // Membuat MultipartBody.Part dari URI
-                val imagePart = prepareFilePart("image", imageUri)
+                val imagePart = prepareFilePart(imageUri)
 
                 if (imagePart != null) {
                     // Kirim data ke ViewModel
                     viewModel.postScanFreshness(
-                        imageUri = sharedViewModel.imageUri!!,
+                        imageUri = imageUri,
                         smell = smellEnglish,
                         texture = textureEnglish,
                         verifiedStore = verifiedStoreEnglish
@@ -100,10 +100,12 @@ class ValidationFragment : Fragment() {
         // Ambil scanResult dari response
         val scanResult = response.data?.scanResult
         scanResult?.let {
+            val imageUri = sharedViewModel.imageUri
             val intent = Intent(requireContext(), ScanResultActivity::class.java).apply {
                 putExtra("SCORE", it.freshnessScore)
                 putExtra("PRODUCE", it.produce)
                 putExtra("IS_CONSUMABLE", it.isConsumable()) // Menentukan apakah produk layak konsumsi
+                putExtra("IMAGE_URI", imageUri.toString())
             }
             startActivity(intent)
         } ?: run {
@@ -130,7 +132,7 @@ class ValidationFragment : Fragment() {
         )
     }
 
-    private fun prepareFilePart(fieldName: String, uri: Uri): MultipartBody.Part? {
+    private fun prepareFilePart(uri: Uri): MultipartBody.Part? {
         val contentResolver = requireContext().contentResolver
         val inputStream = contentResolver.openInputStream(uri)
         val file = File(requireContext().cacheDir, "upload_image.jpg")
@@ -151,6 +153,6 @@ class ValidationFragment : Fragment() {
             contentResolver.getType(uri)?.toMediaTypeOrNull(),
             file
         )
-        return MultipartBody.Part.createFormData(fieldName, file.name, requestBody)
+        return MultipartBody.Part.createFormData("image", file.name, requestBody)
     }
 }

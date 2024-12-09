@@ -8,6 +8,8 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.io.FileOutputStream
 
@@ -23,13 +25,13 @@ class ScanRepository(private val apiScan: ApiScan, private val context: Context)
         val file = createTempFileFromUri(imageUri)
 
         // Buat MultipartBody.Part untuk file gambar
-        val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
+        val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
         val imagePart = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
         // Buat RequestBody untuk parameter tambahan
-        val smellBody = RequestBody.create("text/plain".toMediaTypeOrNull(), smell)
-        val textureBody = RequestBody.create("text/plain".toMediaTypeOrNull(), texture)
-        val verifiedStoreBody = RequestBody.create("text/plain".toMediaTypeOrNull(), verifiedStore)
+        val smellBody = smell.toRequestBody("text/plain".toMediaTypeOrNull())
+        val textureBody = texture.toRequestBody("text/plain".toMediaTypeOrNull())
+        val verifiedStoreBody = verifiedStore.toRequestBody("text/plain".toMediaTypeOrNull())
 
         // Kirim data ke API
         return apiScan.postScanFreshness(imagePart, smellBody, textureBody, verifiedStoreBody)
