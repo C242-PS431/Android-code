@@ -20,9 +20,9 @@ object ApiConfig {
                     .build()
                 chain.proceed(modifiedRequest)
             }
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
             .build()
     private val retrofit: Retrofit
         get() = Retrofit.Builder()
@@ -31,9 +31,9 @@ object ApiConfig {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     
-    val apiScanService: ApiScan
-        get() = retrofit.create(ApiScan::class.java)
+    val apiScanService: ApiService
+        get() = retrofit.create(ApiService::class.java)
 
-    val apiHistoryService: ApiHistory
-        get() = retrofit.create(ApiHistory::class.java)
+    val apiHistoryService: ApiService
+        get() = retrofit.create(ApiService::class.java)
 }
