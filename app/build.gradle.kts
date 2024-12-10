@@ -58,4 +58,5 @@ dependencies {
     implementation (libs.androidx.recyclerview)
     implementation (libs.glide)
     implementation (libs.okhttp)
+    implementation (libs.androidx.datastore.preferences)
 }

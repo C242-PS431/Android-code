@@ -49,4 +49,21 @@
     <string name="consumable_yes">Produk ini layak dikonsumsi</string>
     <string name="consumable_no">Produk ini tidak layak dikonsumsi</string>
     <string name="unknown">tidak diketahui</string>
+    <string name="login_title">Login</string>
+    <string name="signup_title">SignUp</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="password_icon_desc">Password</string>
+    <string name="username_icon_desc">Username</string>
+    <string name="login_text1">Belum punya akun?</string>
+    <string name="login_text2">Sign up</string>
+    <string name="button">Login</string>
+    <string name="logo_desc">Description</string>
+    <string name="language_label">Bahasa</string>
+    <string name="language_value">Bahasa Indonesia</string>
+    <string name="name_regis">Name</string>
+    <string name="username_regis">Username</string>
+    <string name="email_regis">Email</string>
+    <string name="password_regis">Password</string>
+    <string name="register_btn">Register</string>
 </resources>
