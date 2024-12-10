@@ -21,7 +21,7 @@ class AuthRepository(private val apiAuth: ApiAuth, private val userPreferences: 
         if (response.isSuccessful) {
             response.body()?.data?.token?.let { token ->
                 // Simpan token ke DataStore setelah berhasil registrasi
-                userPreferences.saveAuthToken(token)
+                userPreferences.saveToken(token)
             }
         }
 

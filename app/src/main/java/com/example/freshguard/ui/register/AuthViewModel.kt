@@ -26,7 +26,7 @@ class AuthViewModel(application: Application, private val authRepository: AuthRe
                     val token = response.body()?.data?.token
                     token?.let {
                         // Simpan token di UserPreferences setelah registrasi sukses
-                        userPreferences.saveAuthToken(token) // Menggunakan token langsung tanpa it
+                        userPreferences.saveToken(token) // Menggunakan token langsung tanpa it
                     }
                     onSuccess(response.body())
                 } else {

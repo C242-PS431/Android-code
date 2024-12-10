@@ -1,36 +1,38 @@
 package com.example.freshguard.ui.register
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
+import com.example.freshguard.MainActivity
 import com.example.freshguard.R
 import com.example.freshguard.data.local.UserPreferences
 import com.example.freshguard.data.repository.AuthRepository
-import com.example.freshguard.data.retrofit.ApiAuth
 import com.example.freshguard.data.retrofit.ApiConfig
-import com.example.freshguard.data.retrofit.ApiConfig.apiAuthService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
-    private val userPreferences = UserPreferences(applicationContext)
-    private val authRepository = AuthRepository(ApiConfig.apiAuthService, userPreferences)
-    // Menggunakan ViewModel dengan AuthViewModelFactory untuk menyediakan AuthViewModel
-    private val authViewModel: AuthViewModel by viewModels {
-        AuthViewModelFactory(application, authRepository) // Menyediakan Application dan AuthRepository
+
+    private val userPreferences: UserPreferences by lazy { UserPreferences(applicationContext) }
+    private val authRepository: AuthRepository by lazy { AuthRepository(ApiConfig.apiAuthService, userPreferences) }
+
+    private val authViewModel: AuthViewModel by lazy {
+        ViewModelProvider(this, AuthViewModelFactory(application, authRepository))[AuthViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_register)
+
+        // Inisialisasi ApiConfig setelah registrasi berhasil
+        ApiConfig.init(applicationContext) // Panggil init di sini
 
         val edtName = findViewById<EditText>(R.id.edtName)
         val edtUsername = findViewById<EditText>(R.id.edtUsername)
@@ -53,18 +55,22 @@ class RegisterActivity : AppCompatActivity() {
                 password = password,
                 onSuccess = { response ->
                     response?.data?.token?.let { token ->
-//                        val userPreferences = UserPreferences(applicationContext)
                         CoroutineScope(Dispatchers.IO).launch {
-                            userPreferences.saveAuthToken(token) // Memanggil saveAuthToken di dalam coroutine
-                        }// Menyimpan token ke DataStore
+                            userPreferences.saveToken(token)
+                        }
                     }
+
                     Toast.makeText(this, "Success: ${response?.message}", Toast.LENGTH_SHORT).show()
+                    // Arahkan ke MainActivity setelah registrasi sukses
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                    finish()
                 },
                 onError = { errorMessage ->
                     Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                 }
             )
         }
-
     }
 }

@@ -10,6 +10,17 @@
     tools:context=".ui.scan.ScanFragment">
 
     <TextView
+        android:id="@+id/textVieww"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/text_scan"
+        android:layout_gravity="center"
+        android:textSize="24sp"
+        android:textColor="@color/purple_300"
+        android:textStyle="normal"/>
+
+    <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

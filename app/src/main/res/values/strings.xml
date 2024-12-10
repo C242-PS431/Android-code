@@ -66,4 +66,6 @@
     <string name="email_regis">Email</string>
     <string name="password_regis">Password</string>
     <string name="register_btn">Register</string>
+    <string name="text_welcome">Hallo, selamat datang Freshguard! Silahkan daftarkan diri kalian</string>
+    <string name="text_scan">Hai! Mau Scan apa Hari ini?</string>
 </resources>

@@ -6,18 +6,6 @@
     app:startDestination="@+id/navigation_scan">
 
     <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.example.freshguard.ui.profile.ProfileFragment"
-        android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
-
-    <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.freshguard.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-
-    <fragment
         android:id="@+id/navigation_scan"
         android:name="com.example.freshguard.ui.scan.ScanFragment"
         android:label="@string/title_scan"

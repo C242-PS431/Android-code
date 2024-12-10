@@ -10,6 +10,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.freshguard.data.retrofit.ApiConfig
 import com.example.freshguard.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -28,8 +29,6 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_scan,
-                R.id.navigation_dashboard,
-                R.id.navigation_profile,
                 R.id.HistoryFragment
             )
         )

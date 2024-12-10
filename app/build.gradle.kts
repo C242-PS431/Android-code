@@ -59,4 +59,6 @@ dependencies {
     implementation (libs.glide)
     implementation (libs.okhttp)
     implementation (libs.androidx.datastore.preferences)
+    implementation (libs.logging.interceptor)
+
 }

@@ -30,7 +30,7 @@ class SplashScreenActivity : AppCompatActivity() {
             delay(2000) // Delay selama 2 detik (untuk tampilan splash screen)
 
             // Cek apakah token tersedia
-            val token = userPreferences.authToken.firstOrNull()
+            val token = userPreferences.getToken()
             if (!token.isNullOrEmpty()) {
                 // Jika token ada, arahkan ke MainActivity (yang memiliki ScanFragment)
                 val intent = Intent(this@SplashScreenActivity, MainActivity::class.java)

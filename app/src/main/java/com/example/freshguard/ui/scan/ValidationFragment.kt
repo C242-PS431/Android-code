@@ -38,6 +38,7 @@ class ValidationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        ApiConfig.init(requireContext())
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
         viewModel = ViewModelProvider(
             this,
@@ -112,7 +113,7 @@ class ValidationFragment : Fragment() {
             val intent = Intent(requireContext(), ScanResultActivity::class.java).apply {
                 putExtra("SCORE", it.freshnessScore)
                 putExtra("PRODUCE", it.produce)
-                putExtra("IS_CONSUMABLE", it.isConsumable()) // Menentukan apakah produk layak konsumsi
+//                putExtra("IS_CONSUMABLE", it.isConsumable()) // Menentukan apakah produk layak konsumsi
             }
             startActivity(intent)
         } ?: run {
