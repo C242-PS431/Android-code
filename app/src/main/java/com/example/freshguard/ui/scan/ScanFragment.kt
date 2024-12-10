@@ -2,8 +2,11 @@ package com.example.freshguard.ui.scan
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -47,10 +50,16 @@ class ScanFragment : Fragment() {
         // Inisialisasi ActivityResultLauncher untuk mengambil gambar dengan kamera
         cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val imageUri = result.data?.data
-                if (imageUri != null) {
-                    sharedViewModel.imageUri = imageUri
-                    binding.imageScan.setImageURI(imageUri)
+                val imageBitmap = result.data?.extras?.get("data") as? Bitmap
+                if (imageBitmap != null) {
+                    // Simpan gambar di cache dan dapatkan URI
+                    val imageUri = saveImageToCache(requireContext(), imageBitmap)
+                    if (imageUri != null) {
+                        sharedViewModel.imageUri = imageUri
+                        binding.imageScan.setImageURI(imageUri)
+                    } else {
+                        Toast.makeText(requireContext(), "Gagal menyimpan gambar", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     Toast.makeText(requireContext(), "Gagal mengambil gambar", Toast.LENGTH_SHORT).show()
                 }
@@ -122,7 +131,6 @@ class ScanFragment : Fragment() {
         }
     }
 
-    // Periksa apakah izin sudah diberikan untuk akses penyimpanan
     private fun hasStoragePermission(): Boolean {
         return when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ->
@@ -132,12 +140,10 @@ class ScanFragment : Fragment() {
         }
     }
 
-    // Periksa apakah izin sudah diberikan untuk akses kamera
     private fun hasCameraPermission(): Boolean {
         return ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
     }
 
-    // Meminta izin akses penyimpanan
     private fun requestStoragePermission() {
         val permissions = when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ->
@@ -148,25 +154,36 @@ class ScanFragment : Fragment() {
         requestPermissionLauncher.launch(permissions)
     }
 
-    // Meminta izin akses kamera
     private fun requestCameraPermission() {
         requestPermissionLauncher.launch(arrayOf(Manifest.permission.CAMERA))
     }
 
-    // Membuka galeri
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryLauncher.launch(intent)
     }
 
-    // Membuka kamera
     private fun openCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraLauncher.launch(intent)
     }
 
+    private fun saveImageToCache(context: Context, bitmap: Bitmap): Uri? {
+        return try {
+            val fileName = "image_${System.currentTimeMillis()}.png"
+            val outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            outputStream.close()
+            val filePath = context.filesDir.path + "/" + fileName
+            Uri.parse("file://$filePath")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // Mencegah memory leak
+        _binding = null
     }
 }
