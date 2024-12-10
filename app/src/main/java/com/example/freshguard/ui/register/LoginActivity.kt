@@ -8,42 +8,35 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.example.freshguard.MainActivity
 import com.example.freshguard.R
-import com.example.freshguard.data.retrofit.ApiConfig
 import com.example.freshguard.ui.ViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
-class RegisterActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
     private val factory: ViewModelFactory = ViewModelFactory.getInstance(this)
     private val authViewModel: AuthViewModel by viewModels<AuthViewModel>{
         factory
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_register)
+        setContentView(R.layout.activity_login)
 
-        val edtName = findViewById<EditText>(R.id.edtName)
         val edtUsername = findViewById<EditText>(R.id.edtUsername)
         val edtPassword = findViewById<EditText>(R.id.edtPassword)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
-
         btnRegister.setOnClickListener {
-            val name = edtName.text.toString().trim()
             val username = edtUsername.text.toString().trim()
             val password = edtPassword.text.toString().trim()
 
-            if (name.isEmpty() || username.isEmpty() || password.isEmpty()) {
+            if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            authViewModel.registerUser(
-                name = name,
+            authViewModel.login(
                 username = username,
                 password = password,
                 onSuccess = { response ->

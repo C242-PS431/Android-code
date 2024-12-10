@@ -19,4 +19,5 @@ interface ApiScan {
         @Part("texture") texture: RequestBody,
         @Part("verifiedStore") verifiedStore: RequestBody
     ): Response<ScanResponse>
+
 }

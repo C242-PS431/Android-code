@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.freshguard.data.repository.HistoryRepository
+import com.example.freshguard.data.retrofit.ApiCon
 import com.example.freshguard.data.retrofit.ApiConfig
 import com.example.freshguard.databinding.FragmentHistoryBinding
 
@@ -29,8 +30,8 @@ class HistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ApiConfig.init(requireContext())
-        val apiHistory = ApiConfig.apiHistoryService
+        ApiCon.init(requireContext())
+        val apiHistory = ApiCon.apiHistoryService
 
         // Inisialisasi Repository dan ViewModel dengan Factory
         val repository = HistoryRepository(apiHistory)

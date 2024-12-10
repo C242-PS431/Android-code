@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.freshguard.R
 import com.example.freshguard.data.repository.ScanRepository
 import com.example.freshguard.data.response.ScanResponse
+import com.example.freshguard.data.retrofit.ApiCon
 import com.example.freshguard.data.retrofit.ApiConfig
 import com.example.freshguard.databinding.FragmentValidationBinding
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -38,11 +39,10 @@ class ValidationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ApiConfig.init(requireContext())
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
         viewModel = ViewModelProvider(
             this,
-            ScanViewModelFactory(requireContext(), ScanRepository(ApiConfig.apiScanService, requireContext()))
+            ScanViewModelFactory(requireContext(), ScanRepository(ApiCon.apiScanService, requireContext()))
         ).get(ScanViewModel::class.java)
 
         viewModel.scanResult.observe(viewLifecycleOwner) { response ->
