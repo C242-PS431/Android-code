@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.freshguard"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.freshguard"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -48,7 +48,17 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.activity)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation (libs.retrofit)
+    implementation (libs.retrofit2.converter.gson)
+    implementation (libs.osmdroid.android)
+    implementation (libs.androidx.recyclerview)
+    implementation (libs.glide)
+    implementation (libs.okhttp)
+    implementation (libs.androidx.datastore.preferences)
+    implementation (libs.logging.interceptor)
+
 }

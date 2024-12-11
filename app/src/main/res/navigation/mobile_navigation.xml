@@ -3,28 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_dashboard">
-
-    <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.example.freshguard.ui.profile.ProfileFragment"
-        android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
-
-    <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.freshguard.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+    app:startDestination="@+id/navigation_scan">
 
     <fragment
         android:id="@+id/navigation_scan"
         android:name="com.example.freshguard.ui.scan.ScanFragment"
         android:label="@string/title_scan"
-        tools:layout="@layout/fragment_scan" />
+        tools:layout="@layout/fragment_scan" >
+        <action
+            android:id="@+id/action_navigation_scan_to_validationFragment"
+            app:destination="@id/validationFragment" />
+    </fragment>
     <fragment
-        android:id="@+id/trackingFragment"
-        android:name="com.example.freshguard.ui.tracking.TrackingFragment"
+        android:id="@+id/HistoryFragment"
+        android:name="com.example.freshguard.ui.tracking.HistoryFragment"
         android:label="@string/title_tracking"
-        tools:layout="@layout/fragment_tracking" />
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/validationFragment"
+        android:name="com.example.freshguard.ui.scan.ValidationFragment"
+        android:label="@string/title_valid"
+        tools:layout="@layout/fragment_validation" >
+        <action
+            android:id="@+id/action_validationFragment_to_scanResultActivity"
+            app:destination="@id/scanResultActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/scanResultActivity"
+        android:name="com.example.freshguard.ui.scan.ScanResultActivity"
+        android:label="@string/title_result"
+        tools:layout="@layout/activity_scan_result" />
+
+    <fragment
+        android:id="@+id/storeFragment"
+        android:name="com.example.freshguard.ui.store.StoreFragment"
+        android:label="@string/store_maps"
+        tools:layout="@layout/fragment_store" />
 </navigation>
