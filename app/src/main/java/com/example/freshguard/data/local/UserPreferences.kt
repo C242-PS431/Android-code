@@ -26,4 +26,8 @@ class UserPreferences(context: Context) {
     fun getToken(): String? {
         return sharedPreferences.getString(KEY_TOKEN, null)
     }
+    // Menghapus token (untuk logout)
+    fun logout() {
+        sharedPreferences.edit().remove(KEY_TOKEN).apply()
+    }
 }

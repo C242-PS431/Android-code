@@ -55,7 +55,7 @@
     <string name="hint_password">Password</string>
     <string name="password_icon_desc">Password</string>
     <string name="username_icon_desc">Username</string>
-    <string name="login_text1">Belum punya akun?</string>
+    <string name="login_text1">Belum punya akun? yuk registrasi</string>
     <string name="login_text2">Sign up</string>
     <string name="button">Login</string>
     <string name="logo_desc">Description</string>
@@ -68,4 +68,14 @@
     <string name="register_btn">Register</string>
     <string name="text_welcome">Hallo, selamat datang Freshguard! Silahkan daftarkan diri kalian</string>
     <string name="text_scan">Hai! Mau Scan apa Hari ini?</string>
+    <string name="text_login1">hallo, selamat datang silahkan login dahulu</string>
+    <string name="btn_login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="store">Store</string>
+    <string name="store_maps">Store Maps</string>
+    <string name="text_store">Rekomendasi Lokasi Toko Sayur dan Buah</string>
+    <string name="nama_toko">Nama Toko</string>
+    <string name="status">Status</string>
+    <string name="lokasi">Lokasi</string>
+    <string name="alamat_toko">Alamat Toko</string>
 </resources>

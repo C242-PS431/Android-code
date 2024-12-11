@@ -34,4 +34,10 @@
         android:name="com.example.freshguard.ui.scan.ScanResultActivity"
         android:label="@string/title_result"
         tools:layout="@layout/activity_scan_result" />
+
+    <fragment
+        android:id="@+id/storeFragment"
+        android:name="com.example.freshguard.ui.store.StoreFragment"
+        android:label="@string/store_maps"
+        tools:layout="@layout/fragment_store" />
 </navigation>

@@ -18,7 +18,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.freshguard.R
+import com.example.freshguard.data.local.UserPreferences
 import com.example.freshguard.databinding.FragmentScanBinding
+import com.example.freshguard.ui.register.LoginActivity
 
 class ScanFragment : Fragment() {
 
@@ -28,6 +30,8 @@ class ScanFragment : Fragment() {
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<Array<String>>
+    private lateinit var userPreferences: UserPreferences
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,6 +104,7 @@ class ScanFragment : Fragment() {
 
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        userPreferences = UserPreferences(requireContext())
 
         sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
 
@@ -128,6 +133,14 @@ class ScanFragment : Fragment() {
             } else {
                 Toast.makeText(requireContext(), "Pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.buttonLogout.setOnClickListener {
+            // Panggil fungsi logout untuk menghapus token
+            userPreferences.logout()
+            // Pindahkan ke LoginActivity setelah logout
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
+            requireActivity().finish()
         }
     }
 

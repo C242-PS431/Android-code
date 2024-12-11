@@ -81,4 +81,13 @@
         android:backgroundTint="@color/purple_200"
         tools:ignore="ButtonStyle" />
 
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/logout"
+        android:backgroundTint="@color/purple_700"
+        tools:ignore="ButtonStyle" />
+
+
 </LinearLayout>

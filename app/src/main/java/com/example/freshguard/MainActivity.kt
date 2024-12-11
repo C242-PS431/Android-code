@@ -29,7 +29,8 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_scan,
-                R.id.HistoryFragment
+                R.id.HistoryFragment,
+                R.id.storeFragment
             )
         )
 
